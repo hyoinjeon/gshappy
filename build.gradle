@@ -37,6 +37,8 @@ dependencies {
     // jsp 사용 설정
     implementation 'javax.servlet:jstl'
     implementation "org.apache.tomcat.embed:tomcat-embed-jasper"
+    implementation("org.springframework.boot:spring-boot-devtools")
 
     testImplementation('org.springframework.boot:spring-boot-starter-test')
+
 }

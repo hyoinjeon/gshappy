@@ -2,28 +2,31 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-    <title>Read Only by HTML5 UP</title>
+    <title>코이노리 예약 시스템</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
     <link rel="stylesheet" href="resources/css/main.css" />
+    <link rel="stylesheet" href="resources/css/tui-calendar.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://uicdn.toast.com/tui-calendar/latest/tui-calendar.css" />
+
+    <!-- If you use the default popups, use this. -->
+    <link rel="stylesheet" type="text/css" href="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.css" />
+    <link rel="stylesheet" type="text/css" href="https://uicdn.toast.com/tui.time-picker/latest/tui-time-picker.css" />
+
 </head>
 <body class="is-preload">
 
 <!-- Header -->
 <section id="header">
     <header>
-        <span class="image avatar"><img src="resources/images/avatar.jpg" alt="" /></span>
-        <h1 id="logo"><a href="#">Willis Corto</a></h1>
-        <p>I got reprogrammed by a rogue AI<br />
-            and now I'm totally cray</p>
+        <span class="image"><img src="resources/images/logo.png" alt="" style="height : 100px"/></span>
+        <p>선한목자젊은이교회 코이노리 예약 시스템<br />
         <p>${test}</p>
     </header>
     <nav id="nav">
         <ul>
-            <li><a href="#one" class="active">About</a></li>
-            <li><a href="#two">Things I Can Do</a></li>
-            <li><a href="#three">A Few Accomplishments</a></li>
-            <li><a href="#four">Contact</a></li>
+            <li><a href="/" class="active">예약현황</a></li>
+            <li><a href="/forms">예약하기</a></li>
         </ul>
     </nav>
     <footer>
@@ -45,12 +48,28 @@
 
         <!-- One -->
         <section id="one">
-            <div class="image main" data-position="center">
-                <img src="resources/images/banner.jpg" alt="" />
-            </div>
+
             <div class="container">
                 <header class="major">
-                    <h2>Read Only</h2>
+                    <h4 id="calendar-title">2022.06</h4>
+
+                    <div id="calendarMenu">
+                        <ul class="actions">
+                            <li>
+                                <select name="demo-category" id="demo-category" style="height:35px;" onchange="changeView(this.value)">
+                                    <option value="">선택</option>
+                                    <option value="1">월간 보기</option>
+                                    <option value="2">주간 보기</option>
+                                    <option value="3">일간 보기</option>
+                                </select>
+                            </li>
+                            <li><a href="#" class="button alt small" style="height:35px;">오늘</a></li>
+                            <li><a href="#" class="button alt small" style="height:35px;">이전</a></li>
+                            <li><a href="#" class="button alt small" style="height:35px;">다음</a></li>
+                        </ul>
+                    </div>
+                    <div id="calendar" style="height : 700px"></div>
+
                     <p>Just an incredibly simple responsive site<br />
                         template freebie by <a href="http://html5up.net">HTML5 UP</a>.</p>
                 </header>
@@ -128,7 +147,7 @@
         </section>
 
         <!-- Five -->
-        <!--
+
             <section id="five">
                 <div class="container">
                     <h3>Elements</h3>
@@ -435,7 +454,7 @@ print 'It took ' + i + ' iterations to sort the deck.';</code></pre>
                     <section>
                         <h4>Image</h4>
                         <h5>Fit</h5>
-                        <span class="image fit"><img src="images/banner.jpg" alt="" /></span>
+                        <span class="image fit"><img src="resources/images/logo.png" alt="" /></span>
                         <div class="box alt">
                             <div class="row gtr-50 gtr-uniform">
                                 <div class="col-4"><span class="image fit"><img src="images/pic01.jpg" alt="" /></span></div>
@@ -456,7 +475,6 @@ print 'It took ' + i + ' iterations to sort the deck.';</code></pre>
 
                 </div>
             </section>
-        -->
 
     </div>
 
@@ -464,7 +482,7 @@ print 'It took ' + i + ' iterations to sort the deck.';</code></pre>
     <section id="footer">
         <div class="container">
             <ul class="copyright">
-                <li>&copy; Untitled. All rights reserved.</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+                <li>&copy;선한목자젊은이교회. All rights reserved.</li>
             </ul>
         </div>
     </section>
@@ -472,6 +490,11 @@ print 'It took ' + i + ' iterations to sort the deck.';</code></pre>
 </div>
 
 <!-- Scripts -->
+<!-- <script src="resources/js/tui-calendar.min.js"></script> -->
+<script src="https://uicdn.toast.com/tui.code-snippet/v1.5.2/tui-code-snippet.min.js"></script>
+<script src="https://uicdn.toast.com/tui.time-picker/latest/tui-time-picker.min.js"></script>
+<script src="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.min.js"></script>
+<script src="https://uicdn.toast.com/tui-calendar/latest/tui-calendar.js"></script>
 <script src="resources/js/jquery.min.js"></script>
 <script src="resources/js/jquery.scrollex.min.js"></script>
 <script src="resources/js/jquery.scrolly.min.js"></script>
@@ -479,6 +502,74 @@ print 'It took ' + i + ' iterations to sort the deck.';</code></pre>
 <script src="resources/js/breakpoints.min.js"></script>
 <script src="resources/js/util.js"></script>
 <script src="resources/js/main.js"></script>
+
+<script>
+
+    var calendar = new tui.Calendar(document.getElementById('calendar'), {
+        defaultView: 'week',
+        taskView: false,    // Can be also ['milestone', 'task']
+        scheduleView: ['time'],  // Can be also ['allday', 'time']
+        template: {
+            milestone: function(schedule) {
+                return '<span style="color:red;"><i class="fa fa-flag"></i> ' + schedule.title + '</span>';
+            },
+            milestoneTitle: function() {
+                return 'Milestone';
+            },
+            task: function(schedule) {
+                return '&nbsp;&nbsp;#' + schedule.title;
+            },
+            taskTitle: function() {
+                return '<label><input type="checkbox" />Task</label>';
+            },
+            allday: function(schedule) {
+                return schedule.title + ' <i class="fa fa-refresh"></i>';
+            },
+            alldayTitle: function() {
+                return 'All Day';
+            },
+            time: function(schedule) {
+                return schedule.title + ' <i class="fa fa-refresh"></i>' + schedule.start;
+            }
+        },
+        month: {
+            daynames: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+            startDayOfWeek: 0,
+            narrowWeekend: true
+        },
+        week: {
+            daynames: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+            startDayOfWeek: 0,
+            narrowWeekend: true
+        }
+    });
+
+    window.onload = function() {
+
+    }
+
+    // 일간 뷰 보기
+    function changeView(type) {
+        if(type == '') {
+
+        }
+        calendar.changeView('day', true);
+    }
+
+    // 월간 뷰 보기
+    function changeViewMonth() {
+
+        calendar.changeView('month', true);
+    }
+
+    // 주간 뷰 보기
+    function changeViewWeek() {
+
+        calendar.changeView('week', true);
+    }
+
+
+</script>
 
 </body>
 </html>
